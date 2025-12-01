@@ -41,7 +41,7 @@ const HomePage = ({ onNavigate }) => {
       {/* Header */}
       <div className="bg-[#28c495] text-white p-4 flex justify-center items-center relative h-12 shadow-sm shrink-0">
         <div className="flex items-center gap-2 font-bold text-lg">
-          <span className="italic font-serif">HSTAR</span> 学信档案
+          <span className="italic font-serif">学信档案
         </div>
         <LogOut className="absolute right-4" size={20} />
       </div>
