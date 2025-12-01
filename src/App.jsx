@@ -321,7 +321,7 @@ const StudentDetail = ({ onNavigate, data, onUploadPhoto }) => {
 
         {/* 详情列表 (.xj-c .gdjy-view-ul) */}
         <div className="mb-6">
-           <ul className="space-y-4">
+           <ul className="space-y-2">
               <DetailRow label="民族" value={data.nation} />
               <DetailRow label="证件号码" value={data.idNumber} />
               <DetailRow label="学制" value={data.duration} />
@@ -419,9 +419,9 @@ const EditPage = ({ onNavigate, data, onUpdate }) => {
 
 // 列表项组件
 const DetailRow = ({ label, value }) => (
-  <li className="flex justify-between items-start text-[14px] leading-[24px]">
-     <div className="text-[#646566] w-[90px] shrink-0">{label}</div>
-     <div className="text-[#323233] flex-1 text-right break-all">{value}</div>
+  <li className="flex justify-center items-start text-[15px] leading-[26px]">
+     <div className="text-[#969799] w-[80px] text-right mr-5 shrink-0">{label}</div>
+     <div className="text-[#323233] w-[190px] text-left break-all">{value}</div>
   </li>
 );
 
