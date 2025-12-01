@@ -40,39 +40,56 @@ const DEFAULT_AVATAR_SRC = "/picture.jpg";
 
 // --- 2. 页面组件 ---
 
+// 雪碧图图标组件
+const SpriteIcon = ({ index }) => {
+  // 假设每个图标的高度比例是 10% (100% / 10 个图标)
+  // index 从 0 开始
+  const positionY = index * (100 / 9); // 9 是因为 (N-1) 个间隔，最后一个是 100%
+  
+  return (
+    <div 
+      className="w-[28px] h-[28px] bg-no-repeat"
+      style={{
+        backgroundImage: 'url(/index-icon.png)',
+        backgroundSize: '100% auto',
+        backgroundPosition: `0 ${positionY}%`
+      }}
+    />
+  );
+};
+
 // 首页
 const HomePage = ({ onNavigate }) => {
   const menuItems = [
-    { title: "高等教育信息", icon: <GraduationCap size={28} className="text-teal-500" />, action: () => onNavigate('list') },
-    { title: "在线验证报告", icon: <ShieldCheck size={28} className="text-emerald-500" /> },
-    { title: "学历学位认证与成绩验证", icon: <FileBadge size={28} className="text-green-600" /> },
-    { title: "出国报告发送", icon: <Globe size={28} className="text-blue-500" /> },
-    { title: "毕业证书图像校对", icon: <UserCheck size={28} className="text-teal-600" /> },
-    { title: "就业", icon: <Briefcase size={28} className="text-teal-500" /> },
-    { title: "学校满意度", icon: <Smile size={28} className="text-yellow-500" /> },
-    { title: "个人测评", icon: <ClipboardCheck size={28} className="text-blue-400" /> },
-    { title: "信息核查确认", icon: <ShieldCheck size={28} className="text-blue-600" />, action: () => onNavigate('edit') },
-    { title: "“双千”计划 “微专业”", icon: <span className="bg-blue-500 text-white text-xs p-1 rounded">双千</span> },
+    { title: "高等教育信息", iconIndex: 0, action: () => onNavigate('list') },
+    { title: "在线验证报告", iconIndex: 1 },
+    { title: "学历学位认证与成绩验证", iconIndex: 2 },
+    { title: "出国报告发送", iconIndex: 3 },
+    { title: "毕业证书图像校对", iconIndex: 4 },
+    { title: "就业", iconIndex: 7 }, // 按照提供的图片顺序，就业是第8个（index 7）
+    { title: "学校满意度", iconIndex: 5 }, // 笑脸是第6个（index 5）
+    { title: "个人测评", iconIndex: 6 }, // 板夹是第7个（index 6）
+    { title: "信息核查确认", iconIndex: 8, action: () => onNavigate('edit') },
+    { title: "“双千”计划 “微专业”", iconIndex: 9 },
   ];
 
   return (
     <div className="flex flex-col h-full bg-[#F2F4F7]">
-      <div className="bg-[#00C19D] text-white px-4 flex justify-center items-center relative h-[46px] shadow-sm shrink-0">
-        <div className="flex items-center font-medium text-[17px] tracking-wide gap-2">
-          <ChsiLogo />
-          <span>学信档案</span>
+      <div className="bg-[#00C19D] text-white px-4 flex justify-center items-center relative h-[50px] shadow-sm shrink-0">
+        <div className="flex items-center gap-2">
+          <img src="/logo.png" alt="Logo" className="h-[23px] w-auto" />
         </div>
-        <LogOut className="absolute right-3" size={20} />
+        <LogOut className="absolute right-3" size={22} />
       </div>
 
       <div className="flex-1 overflow-y-auto pb-20">
         <div className="mx-3 mt-3 bg-white rounded-lg p-3 flex items-center justify-between shadow-sm">
           <div className="flex items-center gap-3">
              <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center overflow-hidden">
-                <User size={24} className="text-blue-500" />
+                <img src="/tubiao.jpg" alt="Icon" className="w-full h-full object-cover" />
              </div>
              <div>
-               <h3 className="text-gray-800 font-medium text-[15px]">责任心测试</h3>
+               <h3 className="text-gray-800 font-medium text-[15px]">服务意识测试</h3>
              </div>
           </div>
           <button className="bg-[#00C19D] text-white text-[13px] px-4 py-1.5 rounded-full hover:bg-emerald-600 transition">
@@ -103,7 +120,7 @@ const HomePage = ({ onNavigate }) => {
               onClick={item.action || null}
             >
               <div className="flex items-center justify-center h-10">
-                {item.icon}
+                <SpriteIcon index={item.iconIndex} />
               </div>
               <span className="text-[#646566] text-[12px] w-20 leading-tight transform scale-95">{item.title}</span>
             </div>
@@ -348,6 +365,14 @@ const StudentDetail = ({ onNavigate, data, onUploadPhoto }) => {
   );
 };
 
+// 列表项组件
+const DetailRow = ({ label, value }) => (
+  <li className="flex items-start text-[15px] leading-[26px]">
+     <div className="text-[#969799] w-[44%] text-right pr-4 shrink-0">{label}</div>
+     <div className="text-[#323233] w-[56%] text-left break-all">{value}</div>
+  </li>
+);
+
 // 编辑页面
 const EditPage = ({ onNavigate, data, onUpdate }) => {
   const [formData, setFormData] = useState({ ...data });
@@ -417,14 +442,6 @@ const EditPage = ({ onNavigate, data, onUpdate }) => {
   );
 };
 
-// 列表项组件
-const DetailRow = ({ label, value }) => (
-  <li className="flex justify-center items-start text-[15px] leading-[26px]">
-     <div className="text-[#969799] w-[100px] text-right mr-4 shrink-0">{label}</div>
-     <div className="text-[#323233] w-[200px] text-left break-all">{value}</div>
-  </li>
-);
-
 // --- 主程序入口 ---
 
 export default function App() {
@@ -446,9 +463,9 @@ export default function App() {
     department: "水利水电学院",
     class: "水工xx-x",
     studentId: "xxx",
-    admissionDate: "2020年09月07日",
+    admissionDate: "2022年09月07日",
     status: "在籍",
-    leaveDate: "2024年06月21日",
+    leaveDate: "2026年06月21日",
     admitPhoto: "https://api.dicebear.com/7.x/avataaars/svg?seed=XueWenbo&gender=male",
     degreePhoto: null
   });
