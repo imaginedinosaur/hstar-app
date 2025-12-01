@@ -281,7 +281,7 @@ const StudentDetail = ({ onNavigate, data, onUploadPhoto }) => {
                         className="w-full h-full object-cover" 
                       />
                     </div>
-                    <p className="text-[10px] text-center opacity-90 whitespace-nowrap scale-90">录取照片<span className="inline-block ml-0.5 font-sans">↑</span></p>
+                    <p className="text-[10px] text-center opacity-90 whitespace-nowrap scale-90">录取照片</p>
                     <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" accept="image/*" />
                  </div>
 
