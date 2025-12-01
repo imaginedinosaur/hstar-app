@@ -18,10 +18,40 @@ import {
   Camera
 } from 'lucide-react';
 
-// --- Data & State Helper ---
-// We lift state up to App component so edits reflect everywhere
+// --- Custom SVGs for Exact UI Matching ---
 
-// 1. Home Page Component
+// 1. CHSI Header Logo (The "Book/Stack" icon)
+const ChsiLogo = () => (
+  <svg width="28" height="28" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-2">
+    <path d="M220 800c0 0 100-80 300-80s280 80 280 80V300c0 0-80-80-280-80S220 300 220 300v500z" fill="#ffffff" fillOpacity="0.9"/>
+    <path d="M260 760c0 0 80-60 260-60s240 60 240 60V280c0 0-60-60-240-60S260 280 260 280v480z" fill="#ffffff" />
+    <path d="M180 340c0 0 40-40 140-40s140 40 140 40" stroke="#ffffff" strokeWidth="40" strokeLinecap="round"/>
+    <path d="M140 850c0 0 140-100 380-100s360 100 360 100" stroke="#ffffff" strokeWidth="30" strokeLinecap="round" opacity="0.6"/>
+  </svg>
+);
+
+// 2. Default Avatar Silhouette (Gray Person)
+const DefaultAvatar = () => (
+  <div className="w-full h-full bg-[#E5E7EB] flex items-end justify-center overflow-hidden">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-[80%] h-[80%] text-[#9CA3AF]">
+      <path 
+        fillRule="evenodd" 
+        clipRule="evenodd" 
+        d="M12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2ZM9 7C9 5.34315 10.3431 4 12 4C13.6569 4 15 5.34315 15 7C15 8.65685 13.6569 10 12 10C10.3431 10 9 8.65685 9 7Z" 
+        fill="currentColor"
+      />
+      <path 
+        fillRule="evenodd" 
+        clipRule="evenodd" 
+        d="M12 13.5C7.5 13.5 4 16.5 4 19.5V21C4 21.5523 4.44772 22 5 22H19C19.5523 22 20 21.5523 20 21V19.5C20 16.5 16.5 13.5 12 13.5Z" 
+        fill="currentColor"
+      />
+    </svg>
+  </div>
+);
+
+// --- Components ---
+
 const HomePage = ({ onNavigate }) => {
   const menuItems = [
     { title: "高等教育信息", icon: <GraduationCap size={28} className="text-teal-500" />, action: () => onNavigate('list') },
@@ -32,16 +62,17 @@ const HomePage = ({ onNavigate }) => {
     { title: "就业", icon: <Briefcase size={28} className="text-teal-500" /> },
     { title: "学校满意度", icon: <Smile size={28} className="text-yellow-500" /> },
     { title: "个人测评", icon: <ClipboardCheck size={28} className="text-blue-400" /> },
-    { title: "信息核查确认", icon: <ShieldCheck size={28} className="text-blue-600" />, action: () => onNavigate('edit') }, // LINKED TO EDIT PAGE
+    { title: "信息核查确认", icon: <ShieldCheck size={28} className="text-blue-600" />, action: () => onNavigate('edit') },
     { title: "“双千”计划 “微专业”", icon: <span className="bg-blue-500 text-white text-xs p-1 rounded">双千</span> },
   ];
 
   return (
     <div className="flex flex-col h-full bg-gray-50">
-      {/* Header */}
+      {/* Header with Custom Logo */}
       <div className="bg-[#28c495] text-white p-4 flex justify-center items-center relative h-12 shadow-sm shrink-0">
-        <div className="flex items-center gap-2 font-bold text-lg">
-          <span className="italic font-serif">学信档案
+        <div className="flex items-center gap-1 font-bold text-lg">
+          <ChsiLogo />
+          <span>学信档案</span>
         </div>
         <LogOut className="absolute right-4" size={20} />
       </div>
@@ -144,13 +175,11 @@ const EducationList = ({ onNavigate, data }) => {
            <GraduationCap size={40} className="opacity-80" />
         </div>
 
-        {/* Section 1: Student Status - Updated count to 1 */}
+        {/* Section 1: Student Status */}
         <div className="flex justify-between items-end mb-2">
            <h3 className="text-gray-800 font-medium text-lg">学籍信息 (1)</h3>
            <span className="text-xs text-teal-600">还有学籍没有显示出来？ <span className="underline">尝试绑定</span></span>
         </div>
-
-        {/* Card 1: Master's - REMOVED per request */}
 
         {/* Card 2: Undergraduate - CLICKABLE & DYNAMIC */}
         <div 
@@ -257,7 +286,11 @@ const StudentDetail = ({ onNavigate, data, onUploadPhoto }) => {
               {/* Admit Photo - Clickable for upload */}
               <div className="flex flex-col items-center gap-1 cursor-pointer" onClick={handlePhotoClick}>
                  <div className="w-16 h-20 bg-gray-200 rounded border-2 border-white overflow-hidden relative group">
-                    <img src={data.admitPhoto} alt="Admit" className="w-full h-full object-cover" />
+                    {data.admitPhoto ? (
+                      <img src={data.admitPhoto} alt="Admit" className="w-full h-full object-cover" />
+                    ) : (
+                      <DefaultAvatar />
+                    )}
                     {/* Upload overlay hint */}
                     <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                       <Camera size={20} />
@@ -275,7 +308,8 @@ const StudentDetail = ({ onNavigate, data, onUploadPhoto }) => {
 
               <div className="flex flex-col items-center gap-1">
                  <div className="w-16 h-20 bg-gray-200 rounded border-2 border-white overflow-hidden">
-                     <img src={data.degreePhoto} alt="Degree" className="w-full h-full object-cover" />
+                     {/* Static default for degree photo as per request to look like red circle */}
+                     <DefaultAvatar />
                  </div>
                  <span className="text-[10px] opacity-80">学历照片</span>
               </div>
@@ -325,7 +359,7 @@ const StudentDetail = ({ onNavigate, data, onUploadPhoto }) => {
   );
 };
 
-// 4. Edit Page Component (New)
+// 4. Edit Page Component
 const EditPage = ({ onNavigate, data, onUpdate }) => {
   const [formData, setFormData] = useState({ ...data });
 
@@ -384,6 +418,14 @@ const EditPage = ({ onNavigate, data, onUpdate }) => {
           <div className={rowClass}><span className={labelClass}>学籍状态</span><input name="status" value={formData.status} onChange={handleChange} className={inputClass} /></div>
           <div className={rowClass}><span className={labelClass}>离校日期</span><input name="leaveDate" value={formData.leaveDate} onChange={handleChange} className={inputClass} /></div>
         </div>
+
+        {/* Disclaimer Footer */}
+        <div className="mt-8 mb-4 px-4 text-center">
+          <p className="text-[10px] text-gray-400 leading-relaxed border-t border-gray-100 pt-4">
+            【免责声明】<br/>
+            本系统仅供 HSTAR 课题组内部技术交流与前端测试使用，严禁用于任何商业用途或公开传播。
+          </p>
+        </div>
       </div>
     </div>
   );
@@ -402,6 +444,7 @@ export default function App() {
   const [currentPage, setCurrentPage] = useState('home');
   
   // Centralized State for Data
+  // Set admitPhoto to null initially to show the DefaultAvatar
   const [studentData, setStudentData] = useState({
     name: "薛文博",
     gender: "男",
@@ -421,8 +464,8 @@ export default function App() {
     admissionDate: "2020年09月07日",
     status: "不在籍（毕业）",
     leaveDate: "2024年06月21日",
-    admitPhoto: "https://api.dicebear.com/7.x/avataaars/svg?seed=XueWenbo&gender=male",
-    degreePhoto: "https://api.dicebear.com/7.x/avataaars/svg?seed=XueWenbo2&gender=male"
+    admitPhoto: null, // Set to null to trigger default silhouette
+    degreePhoto: null
   });
 
   const handleUpdateData = (newData) => {
@@ -441,8 +484,6 @@ export default function App() {
     <div className="flex items-center justify-center min-h-screen bg-gray-200 font-sans">
       {/* Mobile Device Simulator Container */}
       <div className="w-full max-w-[400px] h-[850px] bg-white relative shadow-2xl overflow-hidden flex flex-col">
-        {/* REMOVED STATUS BAR as requested */}
-
         {/* Content Area */}
         <div className="flex-1 overflow-hidden relative bg-gray-50">
           {currentPage === 'home' && <HomePage onNavigate={setCurrentPage} />}
