@@ -30,13 +30,13 @@ const ChsiLogo = () => (
   </svg>
 );
 
-// 默认头像 (灰色剪影)
-const DefaultAvatar = () => (
-  <div className="w-full h-full bg-[#E0E0E0] flex flex-col items-center justify-end">
-    <div className="w-[45%] h-[32%] bg-[#9E9E9E] rounded-full mb-1"></div>
-    <div className="w-[75%] h-[38%] bg-[#9E9E9E] rounded-t-[50%]"></div>
-  </div>
-);
+// =========================================================================
+// [👇👇👇 请在这里修改默认头像 👇👇👇]
+// 将下方的字符串替换为您自己的图片链接即可。
+// 示例 1 (使用网络图片): const DEFAULT_AVATAR_SRC = "https://example.com/photo.jpg";
+// 示例 2 (使用本地图片): const DEFAULT_AVATAR_SRC = "/default-avatar.jpg"; (需将图片放在 public 文件夹)
+// =========================================================================
+const DEFAULT_AVATAR_SRC = "/picture.jpg";
 
 // --- 2. 页面组件 ---
 
@@ -221,7 +221,7 @@ const EducationList = ({ onNavigate, data }) => {
   );
 };
 
-// --- 详情页 (严格基于源代码 HTML 结构重构) ---
+// --- 详情页 ---
 const StudentDetail = ({ onNavigate, data, onUploadPhoto }) => {
   const fileInputRef = useRef(null);
 
@@ -249,7 +249,7 @@ const StudentDetail = ({ onNavigate, data, onUploadPhoto }) => {
       {/* 内容区域 (xj-index chsi-font) */}
       <div className="flex-1 overflow-y-auto bg-white p-4">
         
-        {/* Banner (视觉元素，保持在上方) */}
+        {/* Banner */}
         <div className="bg-gradient-to-r from-[#FF8800] to-[#FF6600] rounded-lg p-3 mb-4 flex items-center justify-between text-white shadow-sm">
            <div>
              <div className="flex items-center gap-2 mb-0.5">
@@ -267,7 +267,6 @@ const StudentDetail = ({ onNavigate, data, onUploadPhoto }) => {
         <div className="bg-[#00C19D] rounded-lg p-4 text-white shadow-md mb-6">
            
            {/* Row 1: Photos + Name (.van-row) */}
-           {/* 左侧 37.5% (.van-col--9), 右侧 62.5% (.van-col--15) */}
            <div className="flex mb-4">
               
               {/* 照片区域 (.van-col--9) */}
@@ -275,11 +274,12 @@ const StudentDetail = ({ onNavigate, data, onUploadPhoto }) => {
                  {/* 录取照片 */}
                  <div className="flex-1 flex flex-col items-center gap-1 cursor-pointer" onClick={handlePhotoClick}>
                     <div className="w-full aspect-[3/4] bg-[#f7f8fa] rounded border-2 border-white/80 overflow-hidden relative group box-border">
-                      {data.admitPhoto ? (
-                        <img src={data.admitPhoto} alt="Admit" className="w-full h-full object-cover" />
-                      ) : (
-                        <DefaultAvatar />
-                      )}
+                      {/* 如果有照片则显示，否则显示新的 DEFAULT_AVATAR_SRC */}
+                      <img 
+                        src={data.admitPhoto || DEFAULT_AVATAR_SRC} 
+                        alt="Admit" 
+                        className="w-full h-full object-cover" 
+                      />
                     </div>
                     <p className="text-[10px] text-center opacity-90 whitespace-nowrap scale-90">录取照片<span className="inline-block ml-0.5 font-sans">↑</span></p>
                     <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" accept="image/*" />
@@ -288,7 +288,12 @@ const StudentDetail = ({ onNavigate, data, onUploadPhoto }) => {
                  {/* 学历照片 */}
                  <div className="flex-1 flex flex-col items-center gap-1">
                     <div className="w-full aspect-[3/4] bg-[#f7f8fa] rounded border-2 border-white/80 overflow-hidden box-border">
-                        <DefaultAvatar />
+                        {/* 如果有照片则显示，否则显示新的 DEFAULT_AVATAR_SRC */}
+                        <img 
+                          src={data.degreePhoto || DEFAULT_AVATAR_SRC} 
+                          alt="Degree" 
+                          className="w-full h-full object-cover" 
+                        />
                     </div>
                     <p className="text-[10px] text-center opacity-90 whitespace-nowrap scale-90">学历照片</p>
                  </div>
@@ -298,21 +303,16 @@ const StudentDetail = ({ onNavigate, data, onUploadPhoto }) => {
               <div className="w-[62.5%] pl-2 flex flex-col justify-center">
                  <h5 className="text-[20px] font-bold mb-1.5 tracking-wide leading-tight">{data.name}</h5>
                  <p className="text-[13px] opacity-90 leading-tight">{data.gender}　{data.dob}</p>
-                 {/* 占位符以确保对齐 */}
                  <div className="h-4"></div>
               </div>
            </div>
 
            {/* Row 2: School Info (.top-bottom-img .xj-detail-img) */}
-           {/* 这部分在 HTML 中是独立的 div，位于 row 下方 */}
            <div className="relative pt-1">
               <div className="flex justify-between items-start mb-1">
-                 {/* 学校名称 (.yxmc) */}
                  <div className="text-[20px] font-bold tracking-wide leading-tight">{data.school}</div>
-                 {/* 标签 (.cc .xj-cc-lable) */}
                  <div className="bg-[#0000001A] px-2 py-0.5 rounded text-[12px] leading-tight">{data.level}</div>
               </div>
-              {/* 专业描述 (.des) */}
               <div className="text-[13px] opacity-90 font-light">
                  {data.major}　|　{data.mode}
               </div>
@@ -431,21 +431,21 @@ export default function App() {
   const [currentPage, setCurrentPage] = useState('home');
   
   const [studentData, setStudentData] = useState({
-    name: "xxx",
+    name: "薛文博",
     gender: "男",
-    dob: "xxxx年xx月xx日",
+    dob: "2002年01月27日",
     school: "河海大学",
     major: "水利水电工程",
     mode: "普通全日制",
     level: "本科",
     nation: "汉族",
-    idNumber: "xxx",
+    idNumber: "150102200201274612",
     duration: "4 年",
     category: "普通高等教育",
     branch: "0",
     department: "水利水电学院",
-    class: "水工xx-x",
-    studentId: "xxx",
+    class: "水工20-2",
+    studentId: "2002010229",
     admissionDate: "2020年09月07日",
     status: "不在籍（毕业）",
     leaveDate: "2024年06月21日",
