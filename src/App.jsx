@@ -57,12 +57,12 @@ const HomePage = ({ onNavigate }) => {
 
   return (
     <div className="flex flex-col h-full bg-[#F2F4F7]">
-      <div className="bg-[#00C19D] text-white p-4 flex justify-center items-center relative h-[46px] shadow-sm shrink-0">
-        <div className="flex items-center font-bold text-[17px] tracking-wide">
+      <div className="bg-[#00C19D] text-white px-4 flex justify-center items-center relative h-[46px] shadow-sm shrink-0">
+        <div className="flex items-center font-medium text-[17px] tracking-wide gap-2">
           <ChsiLogo />
           <span>学信档案</span>
         </div>
-        <LogOut className="absolute right-3" size={18} />
+        <LogOut className="absolute right-3" size={20} />
       </div>
 
       <div className="flex-1 overflow-y-auto pb-20">
@@ -420,8 +420,8 @@ const EditPage = ({ onNavigate, data, onUpdate }) => {
 // 列表项组件
 const DetailRow = ({ label, value }) => (
   <li className="flex justify-center items-start text-[15px] leading-[26px]">
-     <div className="text-[#969799] w-[80px] text-right mr-5 shrink-0">{label}</div>
-     <div className="text-[#323233] w-[190px] text-left break-all">{value}</div>
+     <div className="text-[#969799] w-[100px] text-right mr-4 shrink-0">{label}</div>
+     <div className="text-[#323233] w-[200px] text-left break-all">{value}</div>
   </li>
 );
 
